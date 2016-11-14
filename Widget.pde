@@ -1,6 +1,9 @@
 
 class Widget
 {
+
+  
+
 // widget data
 int dimensions;
 StringList labels;
@@ -8,22 +11,30 @@ FloatList[] data;
 int dataBufferSize = -1;
 
 // widget position and dimension
-float x = 0;
-float y = 0;
-float wWidth = 100;
-float wHeight = 100;
+PVector position;
+PVector size;
+PVector ratio;
+
 // widget apparence
-color wColor = #669933;
-float opacity = 255;
+Theme colors;
+//color wColor = #669933;
+//float opacity = 255;
 //PFont arial = loadFont("Arial-Black-20.vlw");
 // widget state
 String title; 
 boolean selected;
-  
+
 
 /* -------------- FUNCTIONS --------------------- */
 
 Widget(int dim) {
+  
+  position = new PVector();
+  size = new PVector();
+  ratio = new PVector();
+  
+  colors = new Theme();
+  
   dimensions = dim;
   data = new FloatList[dimensions];
   labels = new StringList();
@@ -33,6 +44,10 @@ Widget(int dim) {
     data[i] = new FloatList();
   }
   
+}
+
+PVector getRatio(){
+return ratio;
 }
 
 boolean addData(float val, int dim){

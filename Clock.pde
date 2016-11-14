@@ -4,10 +4,8 @@ class Clock extends Widget
   
 float currentValue = 0; //default starting value
 int ttl = 0;
-float shrinkRatio = 0.3;
 int max_ttl = 60; // maximum number of updates before considering the widget obsolete
 float growing = 0;
-float size;    
   
 int clockOffset = 0;
 
@@ -26,9 +24,12 @@ Clock(String _label, float _size, int _bufferSize) {
   super(1); 
   labels.append(_label);
   title = _label;
-  wWidth = _size;
-  wHeight = _size;
-  size = _size;
+    
+  size.x = _size;
+  size.y = _size;
+  ratio.x = 1;
+  ratio.y = 1;
+  
   ttl = max_ttl;
   dataBufferSize = _bufferSize;
 }
@@ -51,37 +52,38 @@ void update(){
   
 void draw() {
     
-  float bigRadius = size/2;
-  float smallRadius = shrinkRatio * bigRadius;
+  float bigRadius = size.x/2;
+  float smallRadius = bigRadius/3;
+  float increments = (bigRadius-smallRadius)/25;
   
   // if node is selected
-  selected = (sq(x - mouseX) + sq(y - mouseY) < sq(smallRadius/2));
+  selected = (sq((position.x+size.x/2) - mouseX) + sq((position.y+size.y/2) - mouseY) < sq(smallRadius/2));
   // show values on a larger circle
   if (selected) {  
-    fill(#E56498, opacity);  // pink if mouseover
-    if (growing < (bigRadius-smallRadius)) growing = growing+1.0;
+    fill(colors.selected, colors.opacity);  // pink if mouseover
+    if (growing < (bigRadius-smallRadius)) growing = growing+increments;
   } else {
     if (ttl>0)
-      fill(wColor, opacity); // regular
+      fill(colors.base, colors.opacity); // regular
     else 
-      fill(#FF0000, opacity); // ttl exipred, data is too old
+      fill(colors.invalid, colors.opacity); // ttl exipred, data is too old
     if (growing > 0) {
-      if (growing > 5.0) 
-        growing = growing-5.0;
+      if (growing > increments) 
+        growing = growing-increments;
       else
         growing = 0.0;
     }
   }
   
   // Draw inner circle 
-  ellipse(x, y, smallRadius, smallRadius);    
+  ellipse(position.x+size.x/2, position.y+size.y/2, smallRadius, smallRadius);    
   noStroke();          
   
   // Draw title
   textSize(12);
   fill(0,0,0,150);
   textAlign(CENTER,CENTER);
-  text(title,x,y);   
+  text(title,position.x+size.x/2,position.y+size.y/2);   
   
   // draw history (colored dots around the node)
   stroke(0,0,0,25);
@@ -115,14 +117,14 @@ void draw() {
     fill(ColorTools.heatmap[indexColor][0]*255,ColorTools.heatmap[indexColor][1]*255,ColorTools.heatmap[indexColor][2]*255, 255);    
     if (i == data[0].size()-1){
         stroke(255,0,0, 255);
-        line(x+start_x, y+start_y, x+val_x, y+val_y);
+        line(position.x+size.x/2+start_x, position.y+size.y/2+start_y, position.x+size.x/2+val_x, position.y+size.y/2+val_y);
         noStroke();
-        ellipse(x+val_x,y+val_y, 8, 8);
+        ellipse(position.x+size.x/2+val_x,position.y+size.y/2+val_y, size.x/40, size.y/40);
       } else {
         stroke(0,0,0, 25);
-        line(x+start_x, y+start_y, x+val_x, y+val_y);
+        line(position.x+size.x/2+start_x, position.y+size.y/2+start_y, position.x+size.x/2+val_x, position.y+size.y/2+val_y);
         noStroke();
-        ellipse(x+val_x, y+val_y, 3, 3);
+        ellipse(position.x+size.x/2+val_x, position.y+size.y/2+val_y, size.x/80, size.y/80);
       }
     }
   }
