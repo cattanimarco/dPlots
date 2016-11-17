@@ -53,7 +53,7 @@ void update(){
 void draw() {
     
   float bigRadius = size.x/2;
-  float smallRadius = bigRadius/3;
+  float smallRadius = bigRadius/5;
   float increments = (bigRadius-smallRadius)/25;
   
   // if node is selected
@@ -76,7 +76,7 @@ void draw() {
   }
   
   // Draw inner circle 
-  ellipse(position.x+size.x/2, position.y+size.y/2, smallRadius, smallRadius);    
+  ellipse(position.x+size.x/2, position.y+size.y/2, smallRadius*2, smallRadius*2);    
   noStroke();          
   
   // Draw title
@@ -107,10 +107,10 @@ void draw() {
     // decide gradient color
     int indexColor = int(normVal*63);
     // compute line positions
-    float start_x = cos(degree)*(smallRadius/2);
-    float start_y = sin(degree)*(smallRadius/2);      
-    float val_x = cos(degree)*((smallRadius/2)+val);
-    float val_y = sin(degree)*((smallRadius/2)+val);
+    float start_x = cos(degree)*(smallRadius);
+    float start_y = sin(degree)*(smallRadius);      
+    float val_x = cos(degree)*((smallRadius)+val);
+    float val_y = sin(degree)*((smallRadius)+val);
     strokeWeight(1);
     
     // draw circular density

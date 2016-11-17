@@ -2,8 +2,6 @@
 class Widget
 {
 
-  
-
 // widget data
 int dimensions;
 StringList labels;
